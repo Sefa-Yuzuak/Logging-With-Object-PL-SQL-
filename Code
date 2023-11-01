@@ -1,0 +1,42 @@
+Create Or Replace Trigger Garaj_Deneme_Log1
+  After Update On Garaj_Deneme
+  For Each Row
+Declare
+  Type Temp_Table Is Table Of Garaj_Deneme_Log%Rowtype Index By Pls_Integer;
+  v_Temp_Data Temp_Table;
+  i           Number := 0;
+
+Begin
+
+  If :Old.Durum_Id != :New.Durum_Id
+  Then
+    i := i + 1;
+    v_Temp_Data(i).Eski_Deger := :Old.Durum_Id;
+    v_Temp_Data(i).Yeni_Deeger := :New.Durum_Id;
+  
+  End If;
+  If :Old.Sofor_Talep_Varmi != :New.Sofor_Talep_Varmi
+  Then
+    i := i + 1;
+    v_Temp_Data(i).Eski_Deger := :Old.Sofor_Talep_Varmi;
+    v_Temp_Data(i).Yeni_Deeger := :New.Sofor_Talep_Varmi;
+  
+  End If;
+  If :Old.Talep_Edilen_Havuz_Id != :New.Talep_Edilen_Havuz_Id
+  Then
+    i := i + 1;
+    v_Temp_Data(i).Eski_Deger := :Old.Talep_Edilen_Havuz_Id;
+    v_Temp_Data(i).Yeni_Deeger := :New.Talep_Edilen_Havuz_Id;
+  
+  End If;
+
+  For k In 1 .. i
+  Loop
+    Insert Into Garaj_Deneme_Log
+      (Eski_Deger, Yeni_Deeger)
+    Values
+      (v_Temp_Data(k).Eski_Deger, v_Temp_Data(k).Yeni_Deeger);
+  End Loop;
+  i := 0;
+
+End;

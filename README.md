@@ -1,0 +1,6 @@
+# Logging-With-Object-PL-SQL-
+In PL/SQL, we implement auditing by logging changes after every update, delete, or insert operation. When choosing a streamlined approach, we opt to structure our tables with columns such as 'old_data,' 'new_data,' and 'column_name.' Once the log table is created, we proceed to create triggers that will maintain an audit trail for our tables. These triggers consist of conditional statements that handle the Data Manipulation Language (DML) operations required for inserting audit records into the log table.
+
+However, if we continue with this approach and update multiple columns, there is a risk of encountering an error, especially if one of these columns contains incorrect data. To mitigate this risk, we can adopt a different approach. In this alternative approach, we maintain conditional statements inside the trigger. Instead of immediately inserting records into the log table, we store the data in an object during the trigger's execution. After all the conditional statements have been executed, we use a loop to insert the data from the object into the log table, all in a single operation.
+
+This alternative approach reduces the risk of errors occurring due to partial data insertion and provides a more robust auditing process.
